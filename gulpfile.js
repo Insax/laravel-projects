@@ -1,4 +1,5 @@
 var elixir = require('laravel-elixir');
+require('laravel-elixir-stylus');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,5 +13,10 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.stylus('app.styl')
+       .version('public/css/app.css');
+    mix.browserify('app.js')
+       .browserify('hover_dropdown.js')
+       .browserify('popup.js')
+       .browserify('popup_custom.js');
 });
