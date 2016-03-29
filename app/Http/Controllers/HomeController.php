@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Helpers\LogsManger;
+use App\Helpers\LogsManager;
 use Illuminate\Http\Request;
 use DB;
 
@@ -32,6 +32,7 @@ class HomeController extends Controller
 
     public function chart()
     {
-        return view('chart');
+        $data = LogsManager::getChartColumns(1, 'DPS');
+        return view('chart', compact('data'));
     }
 }

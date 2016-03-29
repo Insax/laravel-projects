@@ -5,21 +5,20 @@
     <title>Vue-Charts Basic Example</title>
   </head>
   <body>
-    {{ LogsManager::getTest() }}
     <vue-chart
     :columns="
-    [{
+    [
+    {
         'type': 'string',
         'label': 'Time'
     },
+    @foreach($data as $names)
     {
         'type': 'number',
-        'label': 'Insax DPS'
+        'label': '{{$names->sourceName}}\'s DPS'
     },
-    {
-        'type': 'number',
-        'label': 'Joes DPS'
-    }]"
+    @endforeach
+    ]"
     :rows="
     [
         ['18:30:25', 3000, 2500],

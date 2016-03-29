@@ -4,23 +4,38 @@ use DB;
 
 class LogsManager
 {
-    public $log_id;
-    public $type;
-    public function __construct($id, $type)
+    private static function getLogValidation($id)
     {
-        $this->log_id = $id;
-        $this->type = $type;
+        if(count(DB::table('logs')->where('id', '=', $id)->get()))
+            return true;
+        else
+            return false;
     }
 
-    public function getTest()
+    private static function getPlayerNames($id, $type)
     {
-        return var_dump($this->log_id);
-        var_dump($this->type);
+        $NameFlags = DB::table('log_rows')->select('sourceName', 'sourceFlags')->where('log_id', '=', $id)->groupBy('sourceName')->get();
+        $i=0;
+        foreach($NameFlags as $Data)
+        {
+            $sourceFlags = intval($Data->sourceFlags, 0);
+            if(($sourceFlags & 0x400) > 0)
+            {
+                $Names[$i] = $Data->sourceName;
+                $i++;
+            }
+        }
+        return $NameFlags;
     }
+
+    public static function getChartColumns($id, $type)
+    {
+        if(LogsManager::getLogValidation($id))
+        {
+            $playerNames = LogsManager::getPlayerNames($id, $type);   
+            return $playerNames; 
+        }
+    }
+
+
 }
-/*
-$test = new LogsManager(1, 'dps');
-
-$test->getTest();
-?>
-*/
